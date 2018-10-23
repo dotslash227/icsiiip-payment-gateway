@@ -6,7 +6,6 @@ from django.utils import timezone
 import hashlib
 import hmac
 from django.http import HttpResponse
-import requests
 
 class IndexPage(View):
     def get(self, request):
