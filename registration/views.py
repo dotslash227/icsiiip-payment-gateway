@@ -61,12 +61,12 @@ class IndexPage(View):
 def handle_payment(request):
     msg = request.POST.get("msg")
     msg = msg.strip("|")
-    status = msg[14]
-    mobile = msg[17]
-    email = msg[18]
+    status = msg[24]
+    mobile = msg[16]
+    email = msg[17]
 
     customer = Registration.objects.filter(email=email).order_by("-pk")[0]
-    customer.method = "BillDesk"
+    customer.txn_method = "BillDesk"
     customer.txn_status = "success"
     customer.save()
 
