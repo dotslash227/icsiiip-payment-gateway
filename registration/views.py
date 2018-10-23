@@ -6,6 +6,7 @@ from django.utils import timezone
 import hashlib
 import hmac
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 
 class IndexPage(View):
     def get(self, request):
@@ -56,6 +57,7 @@ class IndexPage(View):
         })
 
 
+@csrf_exempt
 def handle_payment(request):
     msg = request.POST.get("msg")
     msg = msg.strip("|")
