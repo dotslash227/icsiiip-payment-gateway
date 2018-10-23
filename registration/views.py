@@ -65,7 +65,7 @@ def handle_payment(request):
     mobile = msg[17]
     email = msg[18]
 
-    customer = Registration.models.filter(email=email).order_by("-pk")[0]
+    customer = Registration.objects.filter(email=email).order_by("-pk")[0]
     customer.method = "BillDesk"
     customer.txn_status = "success"
     customer.save()
