@@ -30,7 +30,8 @@ class IndexPage(View):
             reg.amount = 1500
             reg.gst_amount = 270
 
-        total_amount = reg.amount + reg.gst_amount
+        # total_amount = reg.amount + reg.gst_amount
+        total_amount = 1.00
 
         reg.txn_id = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment), reg.ipa_enrollment_number)
         
@@ -54,3 +55,18 @@ class IndexPage(View):
         return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
         })
+
+
+def handle_payment(request):
+    msg = request.POST.get("msg")
+    msg = msg.strip("|")
+    status = msg[14]
+    mobile = msg[17]
+    email = msg[18]
+
+    customer = Registration.models.filter(email=email).order_by("-pk")[0]
+    customer.method = "BillDesk"
+    customer.txn_status = "success"
+    customer.save()
+
+    return render(request, "success.html", {})
