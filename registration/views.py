@@ -33,7 +33,7 @@ class IndexPage(View):
         total_amount = reg.amount + reg.gst_amount
         # total_amount = 1.00
 
-        reg.txn_id = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment), reg.ipa_enrollment_number)
+        reg.txnid = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment), reg.ipa_enrollment_number)
         
         merchant_id = "ICSIIPAM"
         security_id = "icsiipam"
