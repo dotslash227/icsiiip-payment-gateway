@@ -70,4 +70,4 @@ def handle_payment(request):
     customer.txn_status = "success"
     customer.save()
 
-    return render(request, "success.html", {})
+    return render(request, "registration/success.html", {})
