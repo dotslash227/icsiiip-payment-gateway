@@ -64,10 +64,12 @@ def handle_payment(request):
     status = msg[24]
     mobile = msg[16]
     email = msg[17]
+    txnid_pg = msg[2]
 
     customer = Registration.objects.filter(email=email).order_by("-pk")[0]
     customer.txn_method = "BillDesk"
     customer.txn_status = "success"
+    customer.txnid_pg = txnid_pg
     customer.save()
 
     return render(request, "registration/success.html", {})

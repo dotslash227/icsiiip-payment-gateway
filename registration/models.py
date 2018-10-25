@@ -23,6 +23,7 @@ class Registration(models.Model):
     ))
     txn_status = models.CharField(max_length=50, blank=True, null=True)
     txnid = models.CharField(max_length=50, blank=True, null=True)
+    txnid_pg = models.CharField(max_length=50, blank=True, null=True)
     txn_method = models.CharField(max_length=50, blank=True, null=True)
     amount = models.FloatField(default=0.00)
     gst_amount = models.FloatField(default=0.00)
