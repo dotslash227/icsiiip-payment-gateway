@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registration',
     'widget_tweaks',
+    'import_export',
 ]
 
 MIDDLEWARE = [
