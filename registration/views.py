@@ -60,7 +60,7 @@ class IndexPage(View):
 @csrf_exempt
 def handle_payment(request):
     msg = request.POST.get("msg")
-    msg = msg.strip("|")
+    msg = msg.split("|")
     status = msg[24]
     mobile = msg[16]
     email = msg[17]
