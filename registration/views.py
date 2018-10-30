@@ -7,6 +7,28 @@ import hashlib
 import hmac
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
+def send_email(customer_details):
+    gst_half = customer_details.gst_amount/2
+    subject = "Your invoice for payments made at ICSI-IIP payment portal"
+    from_email = "no-reply@icsi.edu"
+    html_content = render_to_string("registration/invoice.html", {"customer":customer_details, "gst_half":gst_half})
+    text_content = strip_tags(html_content)
+
+    print (html_content)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email])
+    msg.attach_alternative(html_content, "text/html")
+
+    try:
+        msg.send()
+    except:
+        return False
+    else:
+        return True    
 
 class IndexPage(View):
     def get(self, request):
@@ -38,10 +60,10 @@ class IndexPage(View):
         merchant_id = "ICSIIPAM"
         security_id = "icsiipam"
         billdeskurl = "https://pgi.billdesk.com/pgidsk/PGIMerchantPayment"
-        ru = "http://onlinepayment.icsiiip.com/handle-payment"
+        ru = "http://127.0.0.1:8000/handle-payment"
         key = "0BiJitDZQ86Z"
 
-        hash_string_msg = "%s|%s|NA|%s|NA|NA|NA|INR|NA|R|%s|NA|NA|F|%s|%s|NA|NA|NA|NA|NA|%s" % (merchant_id,reg.txn_id, total_amount,security_id,reg.mobile,reg.email,ru)
+        hash_string_msg = "%s|%s|NA|%s|NA|NA|NA|INR|NA|R|%s|NA|NA|F|%s|%s|NA|NA|NA|NA|NA|%s" % (merchant_id,reg.txnid, total_amount,security_id,reg.mobile,reg.email,ru)
         hash_string = hash_string_msg.encode("utf-8")
         h = hmac.new(b'0BiJitDZQ86Z', hash_string, hashlib.sha256)
         h = h.hexdigest().upper()
@@ -67,9 +89,16 @@ def handle_payment(request):
     txnid_pg = msg[2]
 
     customer = Registration.objects.filter(email=email).order_by("-pk")[0]
+
     customer.txn_method = "BillDesk"
     customer.txn_status = "success"
     customer.txnid_pg = txnid_pg
     customer.save()
+
+    msg = send_email(customer)
+    if msg:
+        print ("email succesfull")
+    else:
+        print ("email not succesfull")
 
     return render(request, "registration/success.html", {})

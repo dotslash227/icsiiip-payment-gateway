@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/htmlpdfapi.production/free_html5_invoice_templates/example1/style.css" />        
+    </head>
+    <body>
+        <header class="clearfix">
+            <div id="logo">
+              <img src="http://icsiiip.com/Portals/0/Images/icsiiip-logo-new.png" style="width:75%;">
+            </div>
+            <h1>INVOICE {{customer.txnid}}</h1>
+            <div id="company" class="clearfix">
+              <div>Institute of Insolvency Professionals</div>
+              <div>3rd Floor, ICSI House, 22, <br /> Institutional Area, Lodhi Road, New Delhi - 11003</div>
+              <div>+91 11 45341099/48/33</div>
+              <div><strong>CIN:</strong> U7499DL2016NPL308625  <strong>GSTIN:</strong> 07AAECI3095G1ZJ</div>
+            </div>
+            <div id="project">
+              <!-- <div><span>First Name</span> Website development</div> -->
+              <div><span>CLIENT</span> {{customer.first_name}} {{customer.last_name}}</div>
+              <div><span>ADDRESS</span> {{customer.address1}} {{customer.address2}} {{customer.country}}</div>
+              <div><span>EMAIL</span> {{customer.email}}</div>
+              <div><span>DATE</span> {{customer.date_added}}</div>
+              <div><span>GSTIN</span> {{customer.gstin}}</div>
+            </div>
+          </header>
+          <main>
+            <table>
+              <thead>
+                <tr>
+                  <th class="desc">DESCRIPTION</th>
+                  <th>PRICE</th>
+                  <th>SGST (9%)</th>
+                  <th>CGST (9%)</th>                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr>                  
+                  <td class="desc">{{customer.get_purpose_of_payment_display}}</td>
+                  <td class="unit">₹{{customer.amount}}</td>
+                  <td class="qty">₹{{gst_half}}</td>
+                  <td class="total">₹{{gst_half}}</td>
+                </tr>                                
+                <tr>
+                  <td colspan="4">SUBTOTAL</td>
+                  <td class="total">₹{{customer.amount}}</td>
+                </tr>
+                <tr>
+                  <td colspan="4">GST 18%</td>
+                  <td class="total">₹{{customer.gst_amount}}</td>
+                </tr>
+                <tr>
+                  <td colspan="4" class="grand total">GRAND TOTAL</td>
+                  <td class="grand total">₹{{customer.amount|add:customer.gst_amount}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="notices">
+              <div>NOTICE:</div>
+              <div class="notice">Payment received by online payment. Bank transaction reference number: {{customer.txnid_pg}}</div>
+            </div>
+          </main>
+          <footer>
+            Invoice was created on a computer and is valid without the signature and seal.
+          </footer>
+    </body>
+</html>
