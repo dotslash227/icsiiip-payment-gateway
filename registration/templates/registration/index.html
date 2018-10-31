@@ -51,39 +51,42 @@
                 <h3>ICSI-IIP Online Payments</h3><hr />                
             </div>
         </div>
-        <!-- /.row -->
-        <div class="container" style="max-width:500px;">
-        <form action="." method="post">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="row" style="margin-bottom:5px; padding-bottom: 5px; border-bottom: 1px solid #0F0F0F;">
-                <div class="col-md-6">
-                    <strong>{{field.label|title}}</strong>
+        <!-- /.row -->        
+        <div class="container" style="max-width:100%;">
+            <div class="row" style="margin-left:100px;">                
+                <div class="col-md-8" style="max-width:450px;">
+                    {% if error %}
+                        <p style="color:red;">{{error}}</p>
+                    {% endif %}
+                        <form action="." method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                            <div class="row" style="margin-bottom:5px; padding-bottom: 5px; border-bottom: 1px solid #0F0F0F;">
+                                <div class="col-md-6">
+                                    <strong>{{field.label|title}}</strong>
+                                </div>
+                                <div class="col-md-6">
+                                    <span>{% render_field field class="form-control" placeholder=field.label %}</span>
+                                </div>
+                            </div>            
+                            {% endfor %}
+                            <br /><center><input type="submit" value="Submit Form and Proceed to payment gateway" name="submit1" /></center>
+                        </form>
                 </div>
-                <div class="col-md-6">
-                    <span>{% render_field field class="form-control" placeholder=field.label %}</span>
-                </div>
-            </div>            
-            {% endfor %}
-            <br /><center><input type="submit" value="Submit Form and Proceed to payment gateway" name="submit1" /></center>
-        </form>
-        </div>
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h3>Fee Details</h3><hr />
-                </div>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <p>Enrollment Fee (₹8260) - Please select this option in purpose of payment, if applying for the first time.</p>
-                        <p>Annual Membership Fee (₹11800) - Please select this option for paying the annual membership fee.</p>
-                        <p>Complains/Greviences (₹1770) - Please select this option for filing complaints/greviences.</p>
-                        <p>* All fees are inclusive of GST, invoice will be sent to your email on succesfull payment.</p>
-                    </div>
+                <div class="col-md-4">
+                    <h4 class="text-center">Schedule of Fees</h4><hr />
+                    {% for each in pt %}
+                    <p><strong>{{each.name}}</strong><br />
+                    {{each.description|safe}}<br />
+                    Fees: ₹{{each.fees}} | GST Applicable: ₹{{each.gst_amount}} (18%)
+                    </p><hr />
+                    {% endfor %}
+                    <p>Note: To claim GST input for this transaction, GST Number has to be put at the time of filling up this form. No request for revised GST return will be entertained once the payment has been made.</p>
+                    <p>GST Input can be claimed by only individuals, GST input claim by payees other than individuals will not be processed.</p>
                 </div>
             </div>
-        </div>
+        
+        </div>        
     </div>
     <!-- /.container -->
 

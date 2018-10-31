@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from .models import Registration
+from .models import Registration, PaymentTypes
 from .forms import RegistrationForm
 from django.utils import timezone
 import hashlib
@@ -33,29 +33,35 @@ def send_email(customer_details):
 class IndexPage(View):
     def get(self, request):
         form = RegistrationForm()
+        payment_types = PaymentTypes.objects.all()
 
         return render(request, "registration/index.html", {
-            "form": form,
+            "form": form, "pt": payment_types,
         })
 
     def post(self, request):
         form = RegistrationForm(request.POST)
         reg = form.save(commit=False)
+        payment_types = PaymentTypes.objects.all()
         
-        if reg.purpose_of_payment == 1:
-            reg.amount = 7000
-            reg.gst_amount = 1260
-        if reg.purpose_of_payment == 2:
-            reg.amount = 10000
-            reg.gst_amount = 1800
-        if reg.purpose_of_payment == 4:
-            reg.amount = 1500
-            reg.gst_amount = 270
-
-        total_amount = reg.amount + reg.gst_amount
+        total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
         # total_amount = 1.00
 
-        reg.txnid = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment), reg.ipa_enrollment_number)
+        reg.txnid = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment.shortcode), reg.ipa_enrollment_number)
+        
+        if not reg.gstin:
+            flag = False
+        else:
+            gst_state = reg.gstin[0:2]
+            pan_status = reg.gstin[5]
+            if pan_status != "P":
+                flag = True
+            else:
+                flag = False
+            if gst_state == "07":
+                reg.gst_mode = 1
+            else:
+                reg.gst_mode = 2
         
         merchant_id = "ICSIIPAM"
         security_id = "icsiipam"
@@ -74,9 +80,15 @@ class IndexPage(View):
 
         post_data = {"msg":msg}
 
-        return render(request, "registration/confirmation.html", {
+        if flag:
+            return render(request, "registration/index.html", {
+                "form": form, "error":"Please enter an individual's GST Number to claim input.",
+                "pt": payment_types
+            })
+        else:
+            return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
-        })
+            })        
 
 
 @csrf_exempt
@@ -91,7 +103,7 @@ def handle_payment(request):
     customer = Registration.objects.filter(email=email).order_by("-pk")[0]
 
     customer.txn_method = "BillDesk"
-    customer.txn_status = "success"
+    customer.txn_status = status
     customer.txnid_pg = txnid_pg
     customer.save()
 
