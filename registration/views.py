@@ -60,7 +60,7 @@ class IndexPage(View):
         merchant_id = "ICSIIPAM"
         security_id = "icsiipam"
         billdeskurl = "https://pgi.billdesk.com/pgidsk/PGIMerchantPayment"
-        ru = "http://127.0.0.1:8000/handle-payment"
+        ru = "http://onlinepayment.icsiiip.com/handle-payment"
         key = "0BiJitDZQ86Z"
 
         hash_string_msg = "%s|%s|NA|%s|NA|NA|NA|INR|NA|R|%s|NA|NA|F|%s|%s|NA|NA|NA|NA|NA|%s" % (merchant_id,reg.txnid, total_amount,security_id,reg.mobile,reg.email,ru)
