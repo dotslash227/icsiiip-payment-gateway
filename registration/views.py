@@ -16,10 +16,9 @@ def send_email(customer_details):
     gst_half = customer_details.gst_amount/2
     subject = "Your invoice for payments made at ICSI-IIP payment portal"
     from_email = "no-reply@icsi.edu"
-    html_content = render_to_string("registration/invoice.html", {"customer":customer_details, "gst_half":gst_half})
+    html_content = render_to_string("registration/invoice.html", {"customer":customer_details})
     text_content = strip_tags(html_content)
-
-    print (html_content)
+    
     msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email])
     msg.attach_alternative(html_content, "text/html")
 
@@ -51,6 +50,8 @@ class IndexPage(View):
         
         if not reg.gstin:
             flag = False
+            reg.cgst = reg.purpose_of_payment.gst_amount/2
+            reg.sgst = reg.purpose_of_payment.gst_amount/2
         else:
             gst_state = reg.gstin[0:2]
             pan_status = reg.gstin[5]
@@ -59,9 +60,10 @@ class IndexPage(View):
             else:
                 flag = False
             if gst_state == "07":
-                reg.gst_mode = 1
+                reg.cgst = reg.purpose_of_payment.gst_amount/2
+                reg.sgst = reg.purpose_of_payment.gst_amount/2
             else:
-                reg.gst_mode = 2
+                reg.igst = reg.purpose_of_payment.gst_amount
         
         merchant_id = "ICSIIPAM"
         security_id = "icsiipam"

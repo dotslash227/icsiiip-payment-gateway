@@ -32,11 +32,9 @@ class Registration(models.Model):
     txnid_pg = models.CharField(max_length=50, blank=True, null=True)
     txn_method = models.CharField(max_length=50, blank=True, null=True)
     amount = models.FloatField(default=0.00)
-    gst_amount = models.FloatField(default=0.00)
-    gst_mode = models.IntegerField(default=1, choices=(
-        (1, "CGST/SGST"),
-        (2, "IGST")
-    ))
+    igst = models.FloatField(blank=True, null=True)
+    cgst = models.FloatField(blank=True, null=True)
+    sgst = models.FloatField(blank=True, null=True)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)

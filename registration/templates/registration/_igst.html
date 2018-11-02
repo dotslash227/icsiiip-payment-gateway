@@ -1,0 +1,28 @@
+<table>
+    <thead>
+      <tr>
+        <th class="desc">DESCRIPTION</th>
+        <th>PRICE</th>
+        <th>IGST (18%)</th>        
+      </tr>
+    </thead>
+    <tbody>
+      <tr>                  
+        <td class="desc">{{customer.purpose_of_payment}}</td>
+        <td class="unit">₹{{customer.amount}}</td>
+        <td class="qty">₹{{customer.igst}}</td>        
+      </tr>                                
+      <tr>
+        <td colspan="4">SUBTOTAL</td>
+        <td class="total">₹{{customer.amount}}</td>
+      </tr>
+      <tr>
+        <td colspan="4">GST 18%</td>
+        <td class="total">₹{{customer.igst}}</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="grand total">GRAND TOTAL</td>
+        <td class="grand total">₹{{customer.amount|add:customer.igst}}</td>
+      </tr>
+    </tbody>
+  </table>
