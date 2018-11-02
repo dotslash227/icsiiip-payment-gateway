@@ -19,7 +19,7 @@ def send_email(customer_details):
     html_content = render_to_string("registration/invoice.html", {"customer":customer_details})
     text_content = strip_tags(html_content)
     
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email])
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email], cc=["vikram.taneja@icsi.edu"])
     msg.attach_alternative(html_content, "text/html")
 
     try:
@@ -43,8 +43,8 @@ class IndexPage(View):
         reg = form.save(commit=False)
         payment_types = PaymentTypes.objects.all()
         
-        total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
-        # total_amount = 1.00
+        # total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
+        total_amount = 1.00
 
         reg.txnid = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment.shortcode), reg.ipa_enrollment_number)
         
