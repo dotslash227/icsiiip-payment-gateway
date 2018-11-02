@@ -44,7 +44,7 @@
     </div>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" style="margin-bottom:25px;"  >
 
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -66,7 +66,15 @@
                                     <strong>{{field.label|title}}</strong>
                                 </div>
                                 <div class="col-md-6">
-                                    <span>{% render_field field class="form-control" placeholder=field.label %}</span>
+                                    {% if field.label == "Gstin" %}                                    
+                                        <select name="gstin-na" class="form-control" style="max-width:75px;" id="gstinna">
+                                            <option value="na">NA</option>
+                                            <option value="yes">Yes</option>
+                                        </select>                                        
+                                        <span>{% render_field field class="form-control" disabled=True placeholder=field.label %}</span>
+                                    {% else %}                                    
+                                        <span>{% render_field field class="form-control" placeholder=field.label %}</span>
+                                    {% endif %}
                                 </div>
                             </div>            
                             {% endfor %}
@@ -95,6 +103,16 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static "registration/js/bootstrap.min.js" %}"></script>
+
+    <script type="text/javascript">
+    $("#gstinna").on("change", function(){
+        if($("#gstinna").val == "na"){
+            $("#id_gstin").prop("disabled", true);
+        }else{
+            $("#id_gstin").prop("disabled", false);
+        }
+    });
+    </script>
 
 </body>
 
