@@ -54,6 +54,7 @@ class IndexPage(View):
             flag = False
             reg.cgst = reg.purpose_of_payment.gst_amount/2
             reg.sgst = reg.purpose_of_payment.gst_amount/2
+            reg.gstin = "Not Applicable"
         else:
             gst_state = reg.gstin[0:2]
             pan_status = reg.gstin[5]
@@ -83,9 +84,7 @@ class IndexPage(View):
         # Invoice format ICSIIIPMA/year/month/pk
         reg.txnid = "ICSIIIPAM/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
 
-        reg.save()
-
-        send_email(reg)
+        reg.save()        
 
         msg = "%s|%s" %(hash_string_msg, h)        
 

@@ -89,8 +89,11 @@
                     Fees: ₹{{each.fees}} | GST Applicable: ₹{{each.gst_amount}} (18%)
                     </p><hr />
                     {% endfor %}
-                    <p>Note: To claim GST input for this transaction, GST Number has to be put at the time of filling up this form. No request for revised GST return will be entertained once the payment has been made.</p>
-                    <p>GST Input can be claimed by only individuals, GST input claim by payees other than individuals will not be processed.</p>
+                    <h4 class="text-center">GST Inputs</h4><hr />
+                    <p>1. GST input can be claimed by only individuals, non individual GSTIN numbers will not be accepted by the system, in case accepted, non individual GSTIN will not be given input.</p>
+                    <p>2. GST number has to submitted at the time of registration, request for GST Input and revised returns will not be entertained once the payment is done.</p>
+                    <p>3. By not filling up the GSTIN field, it is deemed that the applicant does not want to claim GST input or is not registered under GST. Requests or GST input and revised returns will not entertained once the payment is done in such cases.</p>
+                    
                 </div>
             </div>
         
@@ -107,12 +110,10 @@
     <script type="text/javascript">
     $("#gstinna").on("click", function(){
         if($("#gstinna").val() == "na"){
-            $("#id_gstin").prop("disabled", true);
-            console.log("gstin disabled");
+            $("#id_gstin").prop("disabled", true);            
             $(this).unbind('change');
         }else{
-            $("#id_gstin").prop("disabled", false);
-            console.log("gstin enabled");
+            $("#id_gstin").prop("disabled", false);            
             $(this).unbind('change');
         }
     });
