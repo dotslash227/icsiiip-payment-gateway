@@ -16,11 +16,11 @@
             </div>
             <div id="project">
               <!-- <div><span>First Name</span> Website development</div> -->
-              <div><span>CLIENT</span> {{customer.first_name}} {{customer.last_name}}</div>
-              <div><span>ADDRESS</span> {{customer.address1}} {{customer.address2}} {{customer.country}}</div>
+              <div><span>CLIENT</span> {{customer.first_name}} {{customer.last_name|default:""}}</div>
+              <div><span>ADDRESS</span> {{customer.address1|default:""}} {{customer.address2|default:""}} {{customer.country|default:""}}</div>
               <div><span>EMAIL</span> {{customer.email}}</div>
               <div><span>DATE</span> {{customer.date_added}}</div>
-              <div><span>GSTIN</span> {{customer.gstin}}</div>
+              <div><span>GSTIN</span> {{customer.gstin|default:""}}</div>
             </div>
           </header>
           <main>

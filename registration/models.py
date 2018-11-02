@@ -8,6 +8,10 @@ class PaymentTypes(models.Model):
     description = models.TextField(blank=True, null=True)
     fees = models.FloatField(default=0.00)
     gst_amount = models.FloatField(default=0.00)
+    hidden = models.BooleanField(default=False, choices=(
+        (True, "Yes"),
+        (False, "No")
+    ))
 
     def __str__(self):
         return self.name
@@ -30,7 +34,12 @@ class Registration(models.Model):
     txn_status = models.CharField(max_length=50, blank=True, null=True)
     txnid = models.CharField(max_length=50, blank=True, null=True)
     txnid_pg = models.CharField(max_length=50, blank=True, null=True)
-    txn_method = models.CharField(max_length=50, blank=True, null=True)
+    txn_method = models.CharField(max_length=50, blank=True, null=True, choices=(
+        ("BillDesk", "BillDesk"),
+        ("Cash", "Cash"),
+        ("NEFT/IMPS/RTGS", "NEFT/IMPS/RTGS"),
+        ("Cheque", "Cheque"),
+    ))
     amount = models.FloatField(default=0.00)
     igst = models.FloatField(blank=True, null=True)
     cgst = models.FloatField(blank=True, null=True)
@@ -38,3 +47,11 @@ class Registration(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
+
+    def save(self, *args, **kwargs):
+        super(Registration, self).save(*args, **kwargs)
+        self.txnid = "ICSIIIPAM/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)
+        super(Registration, self).save(*args, **kwargs)
+
+
+

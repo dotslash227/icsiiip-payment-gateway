@@ -12,8 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 
-def send_email(customer_details):
-    gst_half = customer_details.gst_amount/2
+def send_email(customer_details):    
     subject = "Your invoice for payments made at ICSI-IIP payment portal"
     from_email = "no-reply@icsi.edu"
     html_content = render_to_string("registration/invoice.html", {"customer":customer_details})
@@ -30,21 +29,24 @@ def send_email(customer_details):
         return True    
 
 class IndexPage(View):
+    payment_types = PaymentTypes.objects.filter(hidden=False)
+
     def get(self, request):
         form = RegistrationForm()
-        payment_types = PaymentTypes.objects.all()
+        
 
         return render(request, "registration/index.html", {
-            "form": form, "pt": payment_types,
+            "form": form, "pt": self.payment_types,
         })
 
     def post(self, request):
         form = RegistrationForm(request.POST)
         reg = form.save(commit=False)
-        payment_types = PaymentTypes.objects.all()
         
-        # total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
-        total_amount = 1.00
+        
+        total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
+        reg.amount = reg.purpose_of_payment.fees
+        # total_amount = 1.00
 
         reg.txnid = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment.shortcode), reg.ipa_enrollment_number)
         
@@ -69,6 +71,7 @@ class IndexPage(View):
         security_id = "icsiipam"
         billdeskurl = "https://pgi.billdesk.com/pgidsk/PGIMerchantPayment"
         ru = "http://onlinepayment.icsiiip.com/handle-payment"
+        # ru = "http://127.0.0.1:8000/handle-payment"
         key = "0BiJitDZQ86Z"
 
         hash_string_msg = "%s|%s|NA|%s|NA|NA|NA|INR|NA|R|%s|NA|NA|F|%s|%s|NA|NA|NA|NA|NA|%s" % (merchant_id,reg.txnid, total_amount,security_id,reg.mobile,reg.email,ru)
@@ -77,6 +80,12 @@ class IndexPage(View):
         h = h.hexdigest().upper()
 
         reg.save()
+        # Invoice format ICSIIIPMA/year/month/pk
+        reg.txnid = "ICSIIIPAM/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
+
+        reg.save()
+
+        send_email(reg)
 
         msg = "%s|%s" %(hash_string_msg, h)        
 
@@ -85,7 +94,7 @@ class IndexPage(View):
         if flag:
             return render(request, "registration/index.html", {
                 "form": form, "error":"Please enter an individual's GST Number to claim input.",
-                "pt": payment_types
+                "pt": self.payment_types
             })
         else:
             return render(request, "registration/confirmation.html", {
