@@ -105,11 +105,15 @@
     <script src="{% static "registration/js/bootstrap.min.js" %}"></script>
 
     <script type="text/javascript">
-    $("#gstinna").on("change", function(){
-        if($("#gstinna").val == "na"){
+    $("#gstinna").on("click", function(){
+        if($("#gstinna").val() == "na"){
             $("#id_gstin").prop("disabled", true);
+            console.log("gstin disabled");
+            $(this).unbind('change');
         }else{
             $("#id_gstin").prop("disabled", false);
+            console.log("gstin enabled");
+            $(this).unbind('change');
         }
     });
     </script>
