@@ -48,7 +48,7 @@ class IndexPage(View):
         reg.amount = reg.purpose_of_payment.fees
         # total_amount = 1.00
 
-        reg.txnid = "ICSI-IIPAM-%s/%s" % (str(reg.purpose_of_payment.shortcode), reg.ipa_enrollment_number)
+        reg.txnid = "ICSIIIPAM/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
         
         if not reg.gstin:
             flag = False
