@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+state_choices = (("Andhra Pradesh","Andhra Pradesh"),("Arunachal Pradesh ","Arunachal Pradesh "),("Assam","Assam"),("Bihar","Bihar"),("Chhattisgarh","Chhattisgarh"),("Goa","Goa"),("Gujarat","Gujarat"),("Haryana","Haryana"),("Himachal Pradesh","Himachal Pradesh"),("Jammu and Kashmir ","Jammu and Kashmir "),("Jharkhand","Jharkhand"),("Karnataka","Karnataka"),("Kerala","Kerala"),("Madhya Pradesh","Madhya Pradesh"),("Maharashtra","Maharashtra"),("Manipur","Manipur"),("Meghalaya","Meghalaya"),("Mizoram","Mizoram"),("Nagaland","Nagaland"),("Odisha","Odisha"),("Punjab","Punjab"),("Rajasthan","Rajasthan"),("Sikkim","Sikkim"),("Tamil Nadu","Tamil Nadu"),("Telangana","Telangana"),("Tripura","Tripura"),("Uttar Pradesh","Uttar Pradesh"),("Uttarakhand","Uttarakhand"),("West Bengal","West Bengal"),("Andaman and Nicobar Islands","Andaman and Nicobar Islands"),("Chandigarh","Chandigarh"),("Dadra and Nagar Haveli","Dadra and Nagar Haveli"),("Daman and Diu","Daman and Diu"),("Lakshadweep","Lakshadweep"),("Delhi NCR","Delhi NCR"),("Puducherry","Puducherry"))
+
 
 class PaymentTypes(models.Model):
     name = models.CharField(max_length=150)
@@ -28,8 +30,11 @@ class Registration(models.Model):
     mobile = models.BigIntegerField()
     address1 = models.CharField(max_length=150, verbose_name="Address Line 1")
     address2 = models.CharField(max_length=150, verbose_name="Address Line 2", blank=True, null=True)
-    landline = models.BigIntegerField(blank=True, null=True)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=25, choices=state_choices, default="Delhi NCR")
+    pincode = models.IntegerField(blank=True, null=True)
     country = models.CharField(max_length=150, default="India")    
+    landline = models.BigIntegerField(blank=True, null=True)    
     purpose_of_payment = models.ForeignKey(PaymentTypes, blank=True, null=True, on_delete=models.CASCADE)
     txn_status = models.CharField(max_length=50, blank=True, null=True)
     txnid = models.CharField(max_length=50, blank=True, null=True)
@@ -50,7 +55,7 @@ class Registration(models.Model):
 
     def save(self, *args, **kwargs):
         super(Registration, self).save(*args, **kwargs)
-        self.txnid = "ICSIIIPAM/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)
+        self.txnid = "ICSIIIPAM/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)        
         super(Registration, self).save(*args, **kwargs)
 
 

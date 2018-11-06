@@ -47,15 +47,21 @@ class IndexPage(View):
         total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
         reg.amount = reg.purpose_of_payment.fees
         # total_amount = 1.00
-
+        
+        reg.save()
         reg.txnid = "ICSIIIPAM/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
         
         if not reg.gstin:
-            flag = False
-            reg.cgst = reg.purpose_of_payment.gst_amount/2
-            reg.sgst = reg.purpose_of_payment.gst_amount/2
-            reg.gstin = "Not Applicable"
-        else:
+            if reg.state == "Delhi NCR":                
+                flag = False
+                reg.cgst = reg.purpose_of_payment.gst_amount/2
+                reg.sgst = reg.purpose_of_payment.gst_amount/2
+                reg.gstin = "Not Applicable"
+            else:
+                flag = False
+                reg.igst = reg.purpose_of_payment.gst_amount
+                reg.gstin = "Not Applicable"
+        else:   
             gst_state = reg.gstin[0:2]
             pan_status = reg.gstin[5]
             if pan_status != "P":
