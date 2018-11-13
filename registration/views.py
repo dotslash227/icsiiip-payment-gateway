@@ -5,21 +5,20 @@ from .forms import RegistrationForm
 from django.utils import timezone
 import hashlib
 import hmac
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 
-def send_email(customer_details):    
-    subject = "Your invoice for payments made at ICSI-IIP payment portal"
-    from_email = "no-reply@icsi.edu"
+def send_email(customer_details):
     html_content = render_to_string("registration/invoice.html", {"customer":customer_details})
-    text_content = strip_tags(html_content)
-    
+    text_content = strip_tags(html_content)    
+    subject = "Your invoice for payments made at ICSI-IIP payment portal"
+    from_email = "no-reply@icsi.edu"        
     msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email], cc=["vikram.taneja@icsi.edu"])
-    msg.attach_alternative(html_content, "text/html")
+    msg.attach_alternative(html_content, "text/html")    
 
     try:
         msg.send()
@@ -100,12 +99,7 @@ class IndexPage(View):
                 "form": form, "error":"Please enter an individual's GST Number to claim input.",
                 "pt": payment_types
             })
-        else:
-            email = send_email(reg)
-            if email:
-                print ("email succesfull")
-            else:
-                print ("email not succesfull")
+        else:            
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        

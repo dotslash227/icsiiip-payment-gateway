@@ -1,11 +1,14 @@
 from django.db import models
 from django.utils import timezone
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 state_choices = (("Andhra Pradesh","Andhra Pradesh"),("Arunachal Pradesh ","Arunachal Pradesh "),("Assam","Assam"),("Bihar","Bihar"),("Chhattisgarh","Chhattisgarh"),("Goa","Goa"),("Gujarat","Gujarat"),("Haryana","Haryana"),("Himachal Pradesh","Himachal Pradesh"),("Jammu and Kashmir ","Jammu and Kashmir "),("Jharkhand","Jharkhand"),("Karnataka","Karnataka"),("Kerala","Kerala"),("Madhya Pradesh","Madhya Pradesh"),("Maharashtra","Maharashtra"),("Manipur","Manipur"),("Meghalaya","Meghalaya"),("Mizoram","Mizoram"),("Nagaland","Nagaland"),("Odisha","Odisha"),("Punjab","Punjab"),("Rajasthan","Rajasthan"),("Sikkim","Sikkim"),("Tamil Nadu","Tamil Nadu"),("Telangana","Telangana"),("Tripura","Tripura"),("Uttar Pradesh","Uttar Pradesh"),("Uttarakhand","Uttarakhand"),("West Bengal","West Bengal"),("Andaman and Nicobar Islands","Andaman and Nicobar Islands"),("Chandigarh","Chandigarh"),("Dadra and Nagar Haveli","Dadra and Nagar Haveli"),("Daman and Diu","Daman and Diu"),("Lakshadweep","Lakshadweep"),("Delhi","Delhi"),("Puducherry","Puducherry"))
+
 
 
 class PaymentTypes(models.Model):
     name = models.CharField(max_length=150)
+    hsnsac = models.CharField(max_length=150, default="None", blank=True, null=True)
     shortcode = models.CharField(max_length=150, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     fees = models.FloatField(default=0.00)
@@ -55,9 +58,5 @@ class Registration(models.Model):
 
     def save(self, *args, **kwargs):
         super(Registration, self).save(*args, **kwargs)
-        self.txnid = "ICSIIIP/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)
+        self.txnid = "ICSIIIP/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)        
         super(Registration, self).save(*args, **kwargs)
-        
-
-
-

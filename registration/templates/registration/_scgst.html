@@ -1,30 +1,23 @@
-<table>
-    <thead>
-      <tr>
-        <th class="desc">DESCRIPTION</th>
-        <th>PRICE</th>
-        <th>CGST (9%)</th>
-        <th>SGST (9%)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>                  
-        <td class="desc">{{customer.purpose_of_payment}}</td>
-        <td class="unit">₹{{customer.amount}}</td>
-        <td class="qty">₹{{customer.cgst}}</td>
-        <td class="qty">₹{{customer.sgst}}</td>
-      </tr>                                
-      <tr>
-        <td colspan="4">SUBTOTAL</td>
-        <td class="total">₹{{customer.amount}}</td>
-      </tr>
-      <tr>
-        <td colspan="4">GST 18%</td>
-        <td class="total">₹{{customer.cgst|add:customer.sgst}}</td>
-      </tr>
-      <tr>
-        <td colspan="4" class="grand total">GRAND TOTAL</td>
-        <td class="grand total">₹{{customer.amount|add:customer.cgst|add:customer.sgst}}</td>
-      </tr>
-    </tbody>
+<tr>
+    <td width="30%" style="border-right:1px solid; height:35px;">9%</td>
+    <td width="70%">{{customer.cgst}}</td>
+  </tr>
   </table>
+  </td>
+  <td width="10%" style="border-top:1px solid; border-right:1px solid; text-align:center; height:30px;">
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="30%" style="border-right:1px solid; height:35px;">9%</td>
+        <td width="70%">{{customer.sgst}}</td>
+      </tr>
+    </table>
+  </td>
+  <td width="10%" style="border-top:1px solid;  text-align:center; height:35px;">
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="30%" style="border-right:1px solid; height:35px;">-</td>
+        <td width="70%">-</td>
+      </tr>
+    </table>
+  </td>
+  <td width="8%" style="border-top:1px solid; border-left:1px solid;  text-align:center; height:30px;">{{customer.amount|add:customer.cgst|add:customer.sgst}}</td>
