@@ -48,10 +48,10 @@ class IndexPage(View):
         # total_amount = 1.00
         
         reg.save()
-        reg.txnid = "ICSIIIPAM/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
+        reg.txnid = "ICSIIIP/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
         
         if not reg.gstin:
-            if reg.state == "Delhi NCR":                
+            if reg.state == "Delhi":                
                 flag = False
                 reg.cgst = reg.purpose_of_payment.gst_amount/2
                 reg.sgst = reg.purpose_of_payment.gst_amount/2
@@ -87,13 +87,13 @@ class IndexPage(View):
 
         reg.save()
         # Invoice format ICSIIIPMA/year/month/pk
-        reg.txnid = "ICSIIIPAM/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
+        reg.txnid = "ICSIIIP/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
 
         reg.save()        
 
         msg = "%s|%s" %(hash_string_msg, h)        
 
-        post_data = {"msg":msg}
+        # post_data = {"msg":msg}        
 
         if flag:
             return render(request, "registration/index.html", {
@@ -101,6 +101,11 @@ class IndexPage(View):
                 "pt": payment_types
             })
         else:
+            email = send_email(reg)
+            if email:
+                print ("email succesfull")
+            else:
+                print ("email not succesfull")
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        

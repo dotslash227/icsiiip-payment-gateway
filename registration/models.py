@@ -31,7 +31,7 @@ class Registration(models.Model):
     address1 = models.CharField(max_length=150, verbose_name="Address Line 1")
     address2 = models.CharField(max_length=150, verbose_name="Address Line 2", blank=True, null=True)
     city = models.CharField(max_length=50)
-    state = models.CharField(max_length=25, choices=state_choices, default="Delhi NCR")
+    state = models.CharField(max_length=25, choices=state_choices, default="Delhi")
     pincode = models.IntegerField(blank=True, null=True)
     country = models.CharField(max_length=150, default="India")    
     landline = models.BigIntegerField(blank=True, null=True)    
@@ -55,7 +55,7 @@ class Registration(models.Model):
 
     def save(self, *args, **kwargs):
         super(Registration, self).save(*args, **kwargs)
-        self.txnid = "ICSIIIPAM/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)
+        self.txnid = "ICSIIIP/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)
         super(Registration, self).save(*args, **kwargs)
         
 
