@@ -28,21 +28,20 @@ def send_email(customer_details):
     else:
         return True    
 
-class IndexPage(View):
-    payment_types = PaymentTypes.objects.filter(hidden=False)
+class IndexPage(View):    
 
     def get(self, request):
         form = RegistrationForm()
-        
+        payment_types = PaymentTypes.objects.filter(hidden=False)
 
         return render(request, "registration/index.html", {
-            "form": form, "pt": self.payment_types,
+            "form": form, "pt": payment_types,
         })
 
     def post(self, request):
         form = RegistrationForm(request.POST)
         reg = form.save(commit=False)
-        
+        payment_types = PaymentTypes.objects.filter(hidden=False)
         
         total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
         reg.amount = reg.purpose_of_payment.fees
@@ -99,7 +98,7 @@ class IndexPage(View):
         if flag:
             return render(request, "registration/index.html", {
                 "form": form, "error":"Please enter an individual's GST Number to claim input.",
-                "pt": self.payment_types
+                "pt": payment_types
             })
         else:
             return render(request, "registration/confirmation.html", {

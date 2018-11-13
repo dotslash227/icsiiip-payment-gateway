@@ -10,7 +10,7 @@
             <h1>INVOICE {{customer.txnid}}</h1>
             <div id="company" class="clearfix">
               <div>Institute of Insolvency Professionals</div>
-              <div>3rd Floor, ICSI House, 22, <br /> Institutional Area, Lodhi Road, New Delhi - 11003</div>
+              <div>3rd Floor, ICSI House, 22, <br /> Institutional Area, Lodhi Road, New Delhi - 110003</div>
               <div>+91 11 45341099/48/33</div>
               <div><strong>CIN:</strong> U7499DL2016NPL308625  <strong>GSTIN:</strong> 07AAECI3095G1ZJ</div>
             </div>
@@ -31,7 +31,7 @@
             {% endif %}
             <div id="notices">
               <div>NOTICE:</div>
-              <div class="notice">Payment received by online payment. Bank transaction reference number: {{customer.txnid_pg}}</div>
+              <div class="notice">Payment received by {{customer.txn_method}}. Transaction reference number: {{customer.txnid_pg}}</div>
             </div>
           </main>
           <footer>
