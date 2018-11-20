@@ -1,23 +1,45 @@
+{% load num_words %}
+<table class="table1">
 <tr>
-  <td width="30%" style="border-right:1px solid; height:35px;">-</td>
-  <td width="70%">-</td>
+<th>S.No.</th>
+<th>Item Description</th>
+<th>SAC Code</th>
+<th>Qty</th>
+<th>Rate/Item</th>
+<th>Taxable Amt</th>
+<th>IGST rate</th>
+<th>IGST Amt</th>
+<th> Round off</th>
+<th>Total</th>
+</tr>
+<tr>
+<th>1.</th>
+<th>{{customer.purpose_of_payment}}</th>
+<th>999512</th>
+<th>1</th>
+<th>{{customer.amount}}</th>
+<th>{{customer.amount}}</th>
+<th>18%</th>
+<th>{{customer.igst}}</th>
+<th>0.00</th>
+<th>{{customer.amount|add:customer.igst}}</th>
 </tr>
 </table>
-</td>
-<td width="10%" style="border-top:1px solid; border-right:1px solid; text-align:center; height:30px;">
-  <table width="100%" cellspacing="0" cellpadding="0">
+<table class="table2">
     <tr>
-      <td width="30%" style="border-right:1px solid; height:35px;">-</td>
-      <td width="70%">-</td>
+    <th>Taxable Amount</th>
+    <th>{{customer.amount}}</th>
     </tr>
-  </table>
-</td>
-<td width="10%" style="border-top:1px solid;  text-align:center; height:35px;">
-  <table width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td width="30%" style="border-right:1px solid; height:35px;">18%</td>
-      <td width="70%">{{customer.igst}}</td>
+    <th>Total Tax</th>
+    <th>{{customer.igst}}</th>
     </tr>
-  </table>
-</td>
-<td width="8%" style="border-top:1px solid; border-left:1px solid;  text-align:center; height:30px;">{{customer.amount|add:customer.igst}}</td>
+    <tr>
+    <th>Round Off</th>
+    <th>0.00</th>
+    </tr>
+    <tr>
+    <th>Invoice Total(In figure)</th>
+    <th>{{customer.amount|add:customer.igst}}</th>
+    </tr>
+    </table>

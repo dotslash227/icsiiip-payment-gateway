@@ -49,7 +49,7 @@ body{
 	<table width="100%" cellspacing="0" cellpadding="0">
 	<tr>
 	<td width="50%" style="height:60px; border-right:1px solid;">
-		<p style="font-size:25px; font-weight:bolder; text-align:center;">ICSI Institute of Insolvency Professionals</p>
+		<p style="font-size:25px; font-weight:bolder; text-align:center;"><img src="http://icsiiip.com/Portals/0/Images/icsiiip-logo-new.png?ver=2018-04-06-112600-960" style="max-width:400px;" /></p>
 	</td>
 	<td width="50%" style="height:60px;" valign="top">
 	<p style="text-align:center; font-weight:bold; margin-bottom:0px; margin-top:4px;">3rd Floor, 22, Institutional Area, Lodi Road</p>
@@ -283,7 +283,11 @@ body{
 	</tr>
 	</table>
 	</td>
-	<td width="8%" style="border-top:1px solid; border-left:1px solid;  text-align:center; height:20px;">{{customer.amount|add:customer.igst|add:customer.sgst|add:customer.cgst}}</td>
+	{% if customer.igst %}
+	<td width="8%" style="border-top:1px solid; border-left:1px solid;  text-align:center; height:20px;">{{customer.amount|add:customer.igst}}</td>
+	{% else %}
+	<td width="8%" style="border-top:1px solid; border-left:1px solid;  text-align:center; height:20px;">{{customer.amount|add:customer.cgst|add:customer.sgst}}</td>
+	{% endif %}
 	</tr>
 	</table>
 	</td>

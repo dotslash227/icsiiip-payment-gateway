@@ -52,6 +52,7 @@ class Registration(models.Model):
     igst = models.FloatField(blank=True, null=True)
     cgst = models.FloatField(blank=True, null=True)
     sgst = models.FloatField(blank=True, null=True)
+    invoice = models.FileField(max_length=150, upload_to="invoices", blank=True, null=True)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)

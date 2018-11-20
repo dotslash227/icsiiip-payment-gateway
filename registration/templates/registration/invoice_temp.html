@@ -1,0 +1,131 @@
+{% load staticfiles %}
+{% load num_words %}
+<DOCTYPE!>
+
+<html>
+
+<style>
+body{
+	width: 650px;	
+    font-size: 10px;
+}
+.underline{
+	border-bottom: 1px solid black;
+	width: 100%;
+	display: block;
+}
+.table1{
+	border: 1px solid black;
+	border-collapse: collapse;
+	width: 100%;
+}
+.table2{
+	width:50%;
+	
+}
+.table2 th{
+	text-align:right;
+}
+.table3{
+	width:100%;
+}
+.table3 th{
+	text-align:left;
+}
+div.a {
+	text-align:right;
+	margin-right:250px;
+}
+/* .img{
+float:left;
+} */
+div.b{
+margin-left:20%;
+}
+</style>
+<body>
+<div class="img" style="margin-bottom:10px;">
+<center><img style="max-width:650px;" src="http://onlinepayment.icsiiip.com/static/registration/icsiiiplogo.png"/></div></center>
+<div class="b">
+<p style="font-size:15px; margin-left:-100px; text-align: center;">3rd Floor, 22, Institutional Area, Lodi Road, New Delhi - 110003<br>
+Phone: 011-45341099/45341041 | Email: info@icsiiip.com | Web: www.icsiiip.com
+</p>
+<p style="font-weight:bold;">GST No.: 07AAECI3095G1ZJ | State Code: 07 </p>
+</div>
+<p style="text-align:center;">
+<span class="underline" style="border-top: 1px solid black;">
+	TAX INVOICE
+</span>
+<!-- <span class="underline">
+	ORIGINAL FOR RECIPIENT
+</span> -->
+</p>
+<table class="table3">
+<tr>
+<th>Invoice No.</th>
+<th style="font-weight:strong;">{{customer.txnid}}</th>
+<th style="font-weight:strong;">DATE   {{customer.date_added}}<th>
+</tr>
+<tr>
+<th>Reverse Charge</th>
+<th>No</th>
+<th>IPA Enrollment No</th>
+<th>{{customer.ipa_enrollment_number}}</th>
+</tr>
+<tr>
+<th>Customer name</th>
+<th>{{customer.first_name}} {{customer.last_name}}</th>
+</tr>
+<tr>
+<th>GSTIN:</th>
+<th>{{customer.gstin}}</th>
+</tr>
+<tr>
+<th>Billing Address</th>
+<th>{{customer.address1}} {{customer.address2|default:""}}, {{customer.city}}, {{customer.state}}-{{customer.pincode}}</th>
+<th>Shipping Address:</th>
+<th>{{customer.address1}} {{customer.address2|default:""}}, {{customer.city}}, {{customer.state}}-{{customer.pincode}}</th>
+</tr>
+<tr>
+<th>State:{{customer.state}}</th>
+<th> </th>
+<th> State:{{customer.state}}</th>
+<th> </th>
+</tr>
+<tr>
+<!-- <th>State:</th> -->
+<!-- <th> </th> -->
+<!-- <th> State:</th> -->
+<th>Place of Supply:Delhi</th>
+</tr>
+</table>
+<br>
+{% if customer.igst %}
+	{% include "registration/_igst.html" %}
+{% else %}
+	{% include "registration/_scgst.html" %}
+{% endif %}
+<!-- <p  style="font-weight:bold;">Invoice total(In words) Rupees Two Thousand Nine Hundreds Fifty Only</p>	 -->
+<hr>
+<table class="table3">
+<tr>
+<th>Transaction ID</th>
+<th>{{customer.txnid_pg}}</th>
+<th></th>
+<th>Transaction Date:</th>
+<th> {{customer.date_added}}</th>
+</tr>
+</table>
+<h5>Dear Sir/Madam,</h5>
+<p>We Acknowledge with thanks the receipt of Online(Tech Pro Transaction ID: {{customer.txnid_pg}}) towards the above mentioned payment</p>
+<br>
+<h3 style="text-align:center;">For ICSI Institute of Insolvency Professionals</h3>
+<br>
+<p style="text-align:center;">Authorised Signatory</p>	
+<h4 style="font-weight:bold;">
+<span class="underline">
+This is computer generated invoice and do not require any stamp or signature.
+</span>
+</h4>
+</body>
+</html>
