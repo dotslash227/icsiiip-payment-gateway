@@ -1,0 +1,6 @@
+{% if customer.igst %}
+    We Acknowledge with thanks the receipt of Online(Transaction ID: {{customer.txnid_pg}}) for Rs. {{customer.total}} towards the above.
+{% else %}
+    We Acknowledge with thanks the receipt of Online(Pro Transaction ID: {{customer.txnid_pg}}) for Rs. {{customer.total}} towards the above.
+{% endif %}
+

@@ -7,4 +7,4 @@ class RegistrationForm(ModelForm):
 
     class Meta:
         model = Registration
-        exclude = ["txn_status", "txnid", "txn_method", "date_added", "amount", "gst_amount", "txnid_pg", "igst", "cgst", "sgst", "send_invoice", "invoice"]
+        exclude = ["txn_status", "txnid", "txn_method", "date_added", "amount", "gst_amount", "txnid_pg", "igst", "cgst", "sgst", "send_invoice", "invoice", "total"]

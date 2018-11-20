@@ -1,5 +1,5 @@
 {% load staticfiles %}
-{% load num_words %}
+{% load num_words_new %}
 <DOCTYPE!>
 
 <html>
@@ -62,18 +62,18 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 </p>
 <table class="table3">
 <tr>
-<th>Invoice No.</th>
+<th>Invoice No. :</th>
 <th style="font-weight:strong;">{{customer.txnid}}</th>
-<th style="font-weight:strong;">DATE   {{customer.date_added}}<th>
+<th style="font-weight:strong;">DATE :   {{customer.date_added}}<th>
 </tr>
 <tr>
-<th>Reverse Charge</th>
+<th>Reverse Charge:</th>
 <th>No</th>
-<th>IPA Enrollment No</th>
+<th>IPA Enrollment No:</th>
 <th>{{customer.ipa_enrollment_number}}</th>
 </tr>
 <tr>
-<th>Customer name</th>
+<th>Customer name:</th>
 <th>{{customer.first_name}} {{customer.last_name}}</th>
 </tr>
 <tr>
@@ -81,7 +81,7 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 <th>{{customer.gstin}}</th>
 </tr>
 <tr>
-<th>Billing Address</th>
+<th>Billing Address:</th>
 <th>{{customer.address1}} {{customer.address2|default:""}}, {{customer.city}}, {{customer.state}}-{{customer.pincode}}</th>
 <th>Shipping Address:</th>
 <th>{{customer.address1}} {{customer.address2|default:""}}, {{customer.city}}, {{customer.state}}-{{customer.pincode}}</th>
@@ -105,7 +105,7 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 {% else %}
 	{% include "registration/_scgst.html" %}
 {% endif %}
-<!-- <p  style="font-weight:bold;">Invoice total(In words) Rupees Two Thousand Nine Hundreds Fifty Only</p>	 -->
+<p style="font-weight:bold;">Invoice total(In words) {{customer.total|towords}} only</p>	
 <hr>
 <table class="table3">
 <tr>
@@ -117,7 +117,7 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 </tr>
 </table>
 <h5>Dear Sir/Madam,</h5>
-<p>We Acknowledge with thanks the receipt of Online(Tech Pro Transaction ID: {{customer.txnid_pg}}) towards the above mentioned payment</p>
+<p>{% include "registration/_thanks.html" %}</p>
 <br>
 <h3 style="text-align:center;">For ICSI Institute of Insolvency Professionals</h3>
 <br>

@@ -52,6 +52,7 @@ class Registration(models.Model):
     igst = models.FloatField(blank=True, null=True)
     cgst = models.FloatField(blank=True, null=True)
     sgst = models.FloatField(blank=True, null=True)
+    total = models.FloatField(blank=True, null=True)
     invoice = models.FileField(max_length=150, upload_to="invoices", blank=True, null=True)
 
     def __str__(self):
@@ -59,5 +60,5 @@ class Registration(models.Model):
 
     def save(self, *args, **kwargs):
         super(Registration, self).save(*args, **kwargs)
-        self.txnid = "ICSIIIP/%s/%s/%s" % (self.date_added.year, self.date_added.month, self.pk)        
+        self.txnid = "ICSIIIP/%s-%s/00%s" % (self.date_added.year%100, (self.date_added.year%100)+1, self.pk)        
         super(Registration, self).save(*args, **kwargs)

@@ -28,7 +28,7 @@ def send_email(customer_details):
     customer_details.invoice = "/invoices/ICSIIIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
     customer_details.save()
 
-    try:        
+    try:                
         msg.send()
     except:
         return False
@@ -51,11 +51,12 @@ class IndexPage(View):
         payment_types = PaymentTypes.objects.filter(hidden=False)
         
         total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
+        reg.total = total_amount
         reg.amount = reg.purpose_of_payment.fees
         # total_amount = 1.00
         
         reg.save()
-        reg.txnid = "ICSIIIP/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
+        reg.txnid = "ICSIIIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
         
         if not reg.gstin:
             if reg.state == "Delhi":                
@@ -94,7 +95,7 @@ class IndexPage(View):
 
         reg.save()
         # Invoice format ICSIIIPMA/year/month/pk
-        reg.txnid = "ICSIIIP/%s/%s/%s" % (reg.date_added.year, reg.date_added.month, reg.pk)
+        reg.txnid = "ICSIIIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
 
         reg.save()        
 
@@ -107,7 +108,7 @@ class IndexPage(View):
                 "form": form, "error":"Please enter an individual's GST Number to claim input.",
                 "pt": payment_types
             })
-        else:            
+        else:                
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        
