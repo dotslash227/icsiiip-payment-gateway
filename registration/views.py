@@ -25,6 +25,9 @@ def send_email(customer_details):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email], cc=["vikram.taneja@icsi.edu"])    
     msg.attach_file(path)
 
+    customer_details.invoice = path
+    customer_details.save()
+
     try:        
         msg.send()
     except:
