@@ -18,14 +18,14 @@ def send_email(customer_details):
     html_content = render_to_string("registration/invoice_temp.html", {"customer":customer_details})
     text_content = "Thank you for your payment with ICSI Institute of Insolvency Professionals. Your invoice for the payments made has been attached with this email."
     html_pdf = HTML(string=html_content)    
-    path = "%s/media-files/%s_%s.pdf" % (settings.BASE_DIR,customer_details.ipa_enrollment_number, customer_details.pk)
+    path = "%s/media-files/invoices/ICSIIIP_%s_%s.pdf" % (settings.BASE_DIR,customer_details.ipa_enrollment_number, customer_details.pk)
     html_pdf.write_pdf(target=path)
     subject = "Your invoice for payments made at ICSI-IIP payment portal"
     from_email = "no-reply@icsi.edu"        
     msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email], cc=["vikram.taneja@icsi.edu"])    
     msg.attach_file(path)
 
-    customer_details.invoice = path
+    customer_details.invoice = "/invoices/ICSIIIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
     customer_details.save()
 
     try:        
@@ -107,8 +107,7 @@ class IndexPage(View):
                 "form": form, "error":"Please enter an individual's GST Number to claim input.",
                 "pt": payment_types
             })
-        else:
-            send_email(reg)
+        else:            
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        
