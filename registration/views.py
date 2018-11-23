@@ -28,7 +28,7 @@ def send_email(customer_details):
     customer_details.invoice = "/invoices/ICSIIIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
     customer_details.save()
 
-    try:                
+    try:                    
         msg.send()
     except:
         return False
@@ -108,7 +108,7 @@ class IndexPage(View):
                 "form": form, "error":"Please enter an individual's GST Number to claim input.",
                 "pt": payment_types
             })
-        else:                
+        else:                 
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        

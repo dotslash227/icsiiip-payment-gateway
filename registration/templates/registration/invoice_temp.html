@@ -9,6 +9,9 @@ body{
 	width: 650px;	
     font-size: 10px;
 }
+.table1 tr, .table1 td, .table1 th {
+	border: 1px solid black;
+}
 .underline{
 	border-bottom: 1px solid black;
 	width: 100%;
@@ -48,7 +51,7 @@ margin-left:20%;
 <center><img style="max-width:650px;" src="http://onlinepayment.icsiiip.com/static/registration/icsiiiplogo.png"/></div></center>
 <div class="b">
 <p style="font-size:15px; margin-left:-100px; text-align: center;">3rd Floor, 22, Institutional Area, Lodi Road, New Delhi - 110003<br>
-Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.com
+Phone: 011-45341099/45341041/45341035 | Email: info@icsiiip.com | Web: www.icsiiip.com
 </p>
 <p style="font-weight:bold;">GST No.: 07AAECI3095G1ZJ | CIN: U7499DL2016NPL308625 | State Code: 07 </p>
 </div>
@@ -64,7 +67,8 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 <tr>
 <th>Invoice No. :</th>
 <th style="font-weight:strong;">{{customer.txnid}}</th>
-<th style="font-weight:strong;">DATE :   {{customer.date_added}}<th>
+<th style="font-weight:strong;">Date: {{customer.date_added|date:"d/m/Y"}} <th>
+<th></th>
 </tr>
 <tr>
 <th>Reverse Charge:</th>
@@ -87,16 +91,17 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 <th>{{customer.address1}} {{customer.address2|default:""}}, {{customer.city}}, {{customer.state}}-{{customer.pincode}}</th>
 </tr>
 <tr>
-<th>State:{{customer.state}}</th>
-<th> </th>
-<th> State:{{customer.state}}</th>
-<th> </th>
+<th>State:</th>
+<th>{{customer.state}} </th>
+<th> State:</th>
+<th>{{customer.state}}</th>
 </tr>
 <tr>
 <!-- <th>State:</th> -->
 <!-- <th> </th> -->
 <!-- <th> State:</th> -->
-<th>Place of Supply:Delhi</th>
+<th>Place of Supply:</th>
+<th>Delhi</th>
 </tr>
 </table>
 <br>
@@ -105,7 +110,7 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 {% else %}
 	{% include "registration/_scgst.html" %}
 {% endif %}
-<p style="font-weight:bold;">Invoice total(In words) {{customer.total|towords}} only</p>	
+<p style="font-weight:bold; text-align: center;">Invoice total(In words) {{customer.total|towords}} only</p>	
 <hr>
 <table class="table3">
 <tr>
@@ -119,13 +124,8 @@ Phone: 011-45341099/45341041/1035 | Email: info@icsiiip.com | Web: www.icsiiip.c
 <h5>Dear Sir/Madam,</h5>
 <p>{% include "registration/_thanks.html" %}</p>
 <br>
-<h3 style="text-align:center;">For ICSI Institute of Insolvency Professionals</h3>
-<br>
-<p style="text-align:center;">Authorised Signatory</p>	
-<h4 style="font-weight:bold;">
-<span class="underline">
-This is computer generated invoice and do not require any stamp or signature.
-</span>
-</h4>
+<h3 style="text-align:right;">For ICSI Institute of Insolvency Professionals</h3>
+<p style="text-align: right;"> Sd/-</p>
+<p style="text-align:right;">Authorised Signatory</p>	
 </body>
 </html>
