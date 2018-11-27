@@ -25,7 +25,7 @@
   <th>9%</th>
   <th>{{customer.sgst}}</th>
   <th>0.00</th>
-  <th>{{customer.amount|add:customer.sgst|add:customer.cgst}}</th>
+  <th>{{customer.total}}</th>
 </tr>
 </table>
 <table class="table2">
@@ -35,7 +35,7 @@
     </tr>
     <tr>
     <th>Total Tax</th>
-    <th>{{customer.cgst|add:customer.sgst}}</th>
+    <th>{{customer.purpose_of_payment.gst_amount}}</th>
     </tr>
     <tr>
     <th>Round Off</th>
@@ -43,6 +43,6 @@
     </tr>
     <tr>
     <th>Invoice Total(In figure)</th>
-    <th>{{customer.amount|add:customer.sgst|add:customer.cgst}}</th>
+    <th>{{customer.total}}</th>
     </tr>
     </table>
