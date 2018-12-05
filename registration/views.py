@@ -17,8 +17,9 @@ import os
 def send_email(customer_details):
     html_content = render_to_string("registration/invoice_temp.html", {"customer":customer_details})
     text_content = "Thank you for your payment with ICSI Institute of Insolvency Professionals. Your invoice for the payments made has been attached with this email."
-    html_pdf = HTML(string=html_content)    
-    path = "%s/media-files/invoices/IIP_%s_%s.pdf" % (settings.BASE_DIR,customer_details.ipa_enrollment_number, customer_details.pk)
+    html_pdf = HTML(string=html_content)  
+    enrollment_number_tem = customer_details.ipa_enrollment_number.strip("/")  
+    path = "%s/media-files/invoices/IIP_%s_%s.pdf" % (settings.BASE_DIR,enrollment_number_tem,customer_details.pk)
     html_pdf.write_pdf(target=path)
     subject = "Your invoice for payments made at ICSI-IIP payment portal"
     from_email = "no-reply@icsi.edu"        
