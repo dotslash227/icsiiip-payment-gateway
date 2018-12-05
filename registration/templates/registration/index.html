@@ -55,6 +55,7 @@
         <div class="container" style="max-width:100%;">
             <div class="row" style="margin-left:100px;">                
                 <div class="col-md-8" style="max-width:450px;">
+                    <p class="text-center">Fields marked with <strong>*</strong> are compulsory</p>
                     {% if error %}
                         <p style="color:red;">{{error}}</p>
                     {% endif %}
@@ -63,7 +64,7 @@
                             {% for field in form %}
                             <div class="row" style="margin-bottom:5px; padding-bottom: 5px; border-bottom: 1px solid #0F0F0F;">
                                 <div class="col-md-6">
-                                    <strong>{{field.label|title}}</strong>
+                                    <strong>{{field.label|title}} {% if field.field.required %}*{% endif %}</strong>
                                 </div>
                                 <div class="col-md-6">
                                     {% if field.label == "Gstin" %}                                    

@@ -30,7 +30,7 @@ class Registration(models.Model):
     last_name = models.CharField(max_length=150, blank=True, null=True)
     email = models.EmailField(max_length=150)
     gstin = models.CharField(max_length=100, blank=True, null=True)
-    mobile = models.BigIntegerField()
+    mobile = models.CharField(max_length=10)
     address1 = models.CharField(max_length=150, verbose_name="Address Line 1")
     address2 = models.CharField(max_length=150, verbose_name="Address Line 2", blank=True, null=True)
     city = models.CharField(max_length=50)
@@ -48,7 +48,7 @@ class Registration(models.Model):
         ("NEFT/IMPS/RTGS", "NEFT/IMPS/RTGS"),
         ("Cheque", "Cheque"),
     ))
-    amount = models.FloatField(default=0.00)
+    taxable_amount = models.FloatField(default=0.00, verbose_name="taxable amount")
     igst = models.FloatField(blank=True, null=True)
     cgst = models.FloatField(blank=True, null=True)
     sgst = models.FloatField(blank=True, null=True)
