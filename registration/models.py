@@ -60,5 +60,5 @@ class Registration(models.Model):
 
     def save(self, *args, **kwargs):
         super(Registration, self).save(*args, **kwargs)
-        self.txnid = "ICSIIIP/%s-%s/00%s" % (self.date_added.year%100, (self.date_added.year%100)+1, self.pk)        
+        self.txnid = "IIP/%s-%s/00%s" % (self.date_added.year%100, (self.date_added.year%100)+1, self.pk)        
         super(Registration, self).save(*args, **kwargs)

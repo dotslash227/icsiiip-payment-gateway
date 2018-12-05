@@ -18,14 +18,14 @@ def send_email(customer_details):
     html_content = render_to_string("registration/invoice_temp.html", {"customer":customer_details})
     text_content = "Thank you for your payment with ICSI Institute of Insolvency Professionals. Your invoice for the payments made has been attached with this email."
     html_pdf = HTML(string=html_content)    
-    path = "%s/media-files/invoices/ICSIIIP_%s_%s.pdf" % (settings.BASE_DIR,customer_details.ipa_enrollment_number, customer_details.pk)
+    path = "%s/media-files/invoices/IIP_%s_%s.pdf" % (settings.BASE_DIR,customer_details.ipa_enrollment_number, customer_details.pk)
     html_pdf.write_pdf(target=path)
     subject = "Your invoice for payments made at ICSI-IIP payment portal"
     from_email = "no-reply@icsi.edu"        
     msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email], cc=["vikram.taneja@icsi.edu"])    
     msg.attach_file(path)
 
-    customer_details.invoice = "/invoices/ICSIIIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
+    customer_details.invoice = "/invoices/IIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
     customer_details.save()
 
     try:                    
@@ -56,7 +56,7 @@ class IndexPage(View):
         # total_amount = 1.00
         
         reg.save()
-        reg.txnid = "ICSIIIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
+        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
         
         if not reg.gstin:
             if reg.state == "Delhi":                
@@ -95,7 +95,7 @@ class IndexPage(View):
 
         reg.save()
         # Invoice format ICSIIIPMA/year/month/pk
-        reg.txnid = "ICSIIIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
+        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
 
         reg.save()        
 
