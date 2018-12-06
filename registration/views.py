@@ -15,23 +15,30 @@ from django.conf import settings
 import os
 
 def send_email(customer_details):
-    html_content = render_to_string("registration/invoice_temp.html", {"customer":customer_details})
+    html_content_original = render_to_string("registration/invoice_temp.html", {"customer":customer_details, "msg":"ORIGINAL FOR RECIPIENT"})
+    html_content_duplicate = render_to_string("registration/invoice_temp.html", {"customer":customer_details, "msg":"DUPLICATE FOR SUPPLIER"})
     text_content = "Thank you for your payment with ICSI Institute of Insolvency Professionals. Your invoice for the payments made has been attached with this email."
-    html_pdf = HTML(string=html_content)  
+    html_pdf_original = HTML(string=html_content_original)
+    html_pdf_duplicate = HTML(string=html_content_duplicate)
     enrollment_number_tem = customer_details.ipa_enrollment_number.replace("/","")  
-    path = "%s/media-files/invoices/IIP_%s_%s.pdf" % (settings.BASE_DIR,enrollment_number_tem,customer_details.pk)
-    html_pdf.write_pdf(target=path)
+    path_original = "%s/media-files/invoices/IIP_%s_%s.pdf" % (settings.BASE_DIR,enrollment_number_tem,customer_details.pk)
+    path_duplicate = "%s/media-files/invoices/IIP_%s_%s_DUPLICATE.pdf" % (settings.BASE_DIR,enrollment_number_tem,customer_details.pk)
+    html_pdf_original.write_pdf(target=path_original)
+    html_pdf_duplicate.write_pdf(target=path_duplicate)
     subject = "Your invoice for payments made at ICSI-IIP payment portal"
     from_email = "no-reply@icsi.edu"        
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email], cc=["vikram.taneja@icsi.edu"])    
-    msg.attach_file(path)
+    msg_original = EmailMultiAlternatives(subject, text_content, from_email, [customer_details.email])    
+    msg_duplicate = EmailMultiAlternatives(subject, text_content, from_email, ["vikram.taneja@icsi.edu"])    
+    msg_original.attach_file(path_original)
+    msg_duplicate.attach_file(path_duplicate)
 
     customer_details.invoice = "/invoices/IIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
     customer_details.save()
 
     try:      
         # print ("emailing")              
-        msg.send()
+        msg_original.send()
+        msg_duplicate.send()
     except:
         return False
     else:
