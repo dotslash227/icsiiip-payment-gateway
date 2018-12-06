@@ -8,3 +8,6 @@ class RegistrationForm(ModelForm):
     class Meta:
         model = Registration
         exclude = ["txn_status", "txnid", "txn_method", "date_added", "taxable_amount", "gst_amount", "txnid_pg", "igst", "cgst", "sgst", "send_invoice", "invoice", "total"]
+        labels = {
+            'ipa_enrollment_number': 'Application/Enrollment Number'
+        }

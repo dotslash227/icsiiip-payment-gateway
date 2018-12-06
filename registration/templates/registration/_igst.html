@@ -8,7 +8,7 @@
 <th>Taxable Amt</th>
 <th>IGST rate</th>
 <th>IGST Amt</th>
-<th> Round off</th>
+<th>Round off</th>
 <th>Total</th>
 </tr>
 <tr>
@@ -16,18 +16,18 @@
 <th>{{customer.purpose_of_payment}}</th>
 <th>999512</th>
 <th>1</th>
-<th>{{customer.amount}}</th>
-<th>{{customer.amount}}</th>
+<th>{{customer.taxable_amount}}</th>
+<th>{{customer.taxable_amount}}</th>
 <th>18%</th>
 <th>{{customer.igst}}</th>
 <th>0.00</th>
-<th>{{customer.amount|add:customer.igst}}</th>
+<th>{{customer.total}}</th>
 </tr>
 </table>
 <table class="table2">
     <tr>
     <th>Taxable Amount</th>
-    <th>{{customer.amount}}</th>
+    <th>{{customer.taxable_amount}}</th>
     </tr>
     <tr>
     <th>Total Tax</th>

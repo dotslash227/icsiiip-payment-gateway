@@ -29,7 +29,8 @@ def send_email(customer_details):
     customer_details.invoice = "/invoices/IIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
     customer_details.save()
 
-    try:                    
+    try:      
+        # print ("emailing")              
         msg.send()
     except:
         return False
@@ -53,7 +54,7 @@ class IndexPage(View):
         
         total_amount = reg.purpose_of_payment.fees + reg.purpose_of_payment.gst_amount
         reg.total = total_amount
-        reg.amount = reg.purpose_of_payment.fees
+        reg.taxable_amount = reg.purpose_of_payment.fees
         # total_amount = 1.00
         
         reg.save()
@@ -109,7 +110,8 @@ class IndexPage(View):
                 "form": form, "error":"Please enter an individual's GST Number to claim input.",
                 "pt": payment_types
             })
-        else:                 
+        else:
+            # send_email(reg)                 
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        
