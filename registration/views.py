@@ -32,7 +32,7 @@ def send_email(customer_details):
     msg_original.attach_file(path_original)
     msg_duplicate.attach_file(path_duplicate)
 
-    customer_details.invoice = "/invoices/IIP_%s_%s.pdf" % (customer_details.ipa_enrollment_number, customer_details.pk)
+    customer_details.invoice = "/invoices/IIP_%s_%s.pdf" % (enrollment_number_tem, customer_details.pk)
     customer_details.save()
 
     try:      
