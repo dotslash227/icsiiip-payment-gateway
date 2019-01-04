@@ -132,18 +132,26 @@ def handle_payment(request):
     mobile = msg[16]
     email = msg[17]
     txnid_pg = msg[2]
+    auth=msg[14]
 
     customer = Registration.objects.filter(email=email).order_by("-pk")[0]
 
-    customer.txn_method = "BillDesk"
-    customer.txn_status = status
-    customer.txnid_pg = txnid_pg
-    customer.save()
+    if auth == "0300":
+        customer.txn_method = "BillDesk"
+        customer.txn_status = status
+        customer.txnid_pg = txnid_pg
+        customer.save()
 
-    msg = send_email(customer)
-    if msg:
-        print ("email succesfull")
+        msg = send_email(customer)
+        if msg:
+            print ("email succesfull")
+        else:
+            print ("email not succesfull")
+        flag = True
     else:
-        print ("email not succesfull")
+        flag = False
 
-    return render(request, "registration/success.html", {})
+
+    return render(request, "registration/success.html", {
+        "flat": flag,
+    })
