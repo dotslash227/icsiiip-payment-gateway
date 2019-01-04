@@ -121,7 +121,7 @@ class IndexPage(View):
                 "pt": payment_types
             })
         else:
-            send_email(reg)                 
+            # send_email(reg)                 
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        
@@ -135,7 +135,7 @@ def handle_payment(request):
     mobile = msg[16]
     email = msg[17]
     txnid_pg = msg[2]
-    auth=msg[14]
+    auth = msg[14]
 
     customer = Registration.objects.filter(email=email).order_by("-pk")[0]
 
