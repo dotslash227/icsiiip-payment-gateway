@@ -12,8 +12,8 @@ class RegistrationResource(resources.ModelResource):
 class RegisterAdmin(ImportExportModelAdmin):
     resource_class = RegistrationResource
     list_display = ["first_name", "last_name", "email", "txnid", "state", "ipa_enrollment_number", "gstin", "txn_status"]
-    search_fields = ["first_name", "last_name", "email", "mobile", "ipa_enrollment_number", "gstin", "purpose_of_payment", "city", "state"]
-    list_filter = ["purpose_of_payment", "state"]
+    search_fields = ["txn_status", "date_added"]
+    list_filter = ["purpose_of_payment", "state", "txn_status"]
 
 admin.site.register(Registration, RegisterAdmin)
 admin.site.register(PaymentTypes)
