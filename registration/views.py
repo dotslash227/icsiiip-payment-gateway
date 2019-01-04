@@ -65,7 +65,10 @@ class IndexPage(View):
         # total_amount = 1.00
         
         reg.save()
-        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
+        last_counter = Registration.objects.filter(txn_status="PGS10001-Success").last()
+        lpk = last_counter.pk
+
+        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, lpk)
         
         if not reg.gstin:
             if reg.state == "Delhi":                
@@ -104,7 +107,7 @@ class IndexPage(View):
 
         reg.save()
         # Invoice format ICSIIIPMA/year/month/pk
-        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
+        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, lpk)
 
         reg.save()        
 
@@ -118,7 +121,7 @@ class IndexPage(View):
                 "pt": payment_types
             })
         else:
-            # send_email(reg)                 
+            send_email(reg)                 
             return render(request, "registration/confirmation.html", {
             "msg": msg, "reg":reg, "amount":total_amount,
             })        
