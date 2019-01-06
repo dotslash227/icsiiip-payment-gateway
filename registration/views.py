@@ -66,7 +66,7 @@ class IndexPage(View):
         
         reg.save()
         last_counter = Registration.objects.filter(txn_status="PGS10001-Success").last()
-        lpk = str(last_counter.pk + 1) + "dd"
+        lpk = str(last_counter.pk + 1)
 
         reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, lpk)
         
