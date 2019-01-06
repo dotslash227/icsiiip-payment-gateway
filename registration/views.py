@@ -64,11 +64,9 @@ class IndexPage(View):
         reg.taxable_amount = reg.purpose_of_payment.fees
         # total_amount = 1.00
         
+        reg.save()            
+        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
         reg.save()
-        last_counter = Registration.objects.filter(txn_status="PGS10001-Success").last()
-        lpk = str(last_counter.pk + 1)
-
-        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, lpk)
         
         if not reg.gstin:
             if reg.state == "Delhi":                
@@ -108,7 +106,7 @@ class IndexPage(View):
 
         reg.save()
         # Invoice format ICSIIIPMA/year/month/pk
-        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, lpk)
+        reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, reg.pk)
 
         reg.save()        
 
