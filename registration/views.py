@@ -66,7 +66,7 @@ class IndexPage(View):
         
         reg.save()
         last_counter = Registration.objects.filter(txn_status="PGS10001-Success").last()
-        lpk = last_counter.pk
+        lpk = str(last_counter.pk + 1) + "dd"
 
         reg.txnid = "IIP/%s-%s/00%s" % (reg.date_added.year%100, (reg.date_added.year%100)+1, lpk)
         
@@ -101,6 +101,7 @@ class IndexPage(View):
         key = "0BiJitDZQ86Z"
 
         hash_string_msg = "%s|%s|NA|%s|NA|NA|NA|INR|NA|R|%s|NA|NA|F|%s|%s|NA|NA|NA|NA|NA|%s" % (merchant_id,reg.txnid, total_amount,security_id,reg.mobile,reg.email,ru)
+        # print (hash_string_msg)
         hash_string = hash_string_msg.encode("utf-8")
         h = hmac.new(b'0BiJitDZQ86Z', hash_string, hashlib.sha256)
         h = h.hexdigest().upper()
@@ -151,10 +152,12 @@ def handle_payment(request):
         else:
             print ("email not succesfull")
         flag = True
-    else:
-        flag = False
+    else:     
+        flag = False   
+        customer.txn_status = status    
+        customer.save()
 
 
     return render(request, "registration/success.html", {
-        "flat": flag,
+        "flag": flag,
     })
